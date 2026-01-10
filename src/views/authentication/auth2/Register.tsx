@@ -1,10 +1,4 @@
-import { Link } from 'react-router';
-import CardBox from 'src/components/shared/CardBox';
-
 import AuthRegister from '../authforms/AuthRegister';
-import SocialButtons from '../authforms/SocialButtons';
-
-import FullLogo from 'src/layouts/full/shared/logo/FullLogo';
 
 const Register = () => {
   return (
