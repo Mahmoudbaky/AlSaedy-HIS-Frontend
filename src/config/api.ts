@@ -13,4 +13,7 @@ export const API_ENDPOINTS = {
     CONFIRM_ACCOUNT: '/auth/confirm-account',
     CHANGE_USER_ROLE: '/auth/change-user-role',
   },
+  STATISTICS: {
+    HOLY_CAPITAL_HOSPITALS: '/statistics/holy-capital-hospitals',
+  },
 } as const;

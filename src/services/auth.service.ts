@@ -1,4 +1,7 @@
-import { API_BASE_URL, API_ENDPOINTS } from 'src/config/api';
+import apiClient from 'src/lib/apiClient';
+import { API_ENDPOINTS } from 'src/config/api';
+import axios from 'axios';
+import { API_BASE_URL } from 'src/config/api';
 
 // Types
 export interface LoginCredentials {
@@ -51,8 +54,6 @@ export interface RegisterResponse {
 
 // Auth Service
 class AuthService {
-  private baseURL = API_BASE_URL;
-
   // Get access token from localStorage
   getAccessToken(): string | null {
     return localStorage.getItem('accessToken');
@@ -94,46 +95,62 @@ class AuthService {
 
   // Login
   async login(credentials: LoginCredentials): Promise<LoginResponse> {
-    const response = await fetch(`${this.baseURL}${API_ENDPOINTS.AUTH.LOGIN}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(credentials),
-    });
+    try {
+      // Use axios without interceptors for login (no token needed)
+      const response = await axios.post<ApiResponse<LoginResponse>>(
+        `${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGIN}`,
+        credentials,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
 
-    const result: ApiResponse<LoginResponse> = await response.json();
+      const result = response.data;
 
-    if (!response.ok) {
+      if (result.success && result.data) {
+        this.setTokens(result.data.tokens);
+        this.setUser(result.data.user);
+        return result.data;
+      }
+
       throw new Error(result.message || 'Login failed');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<LoginResponse>;
+        throw new Error(result.message || 'Login failed');
+      }
+      throw error instanceof Error ? error : new Error('Login failed');
     }
-
-    if (result.data) {
-      this.setTokens(result.data.tokens);
-      this.setUser(result.data.user);
-    }
-
-    return result.data!;
   }
 
   // Register
   async register(data: RegisterData): Promise<RegisterResponse> {
-    const response = await fetch(`${this.baseURL}${API_ENDPOINTS.AUTH.REGISTER}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(data),
-    });
+    try {
+      // Use axios without interceptors for register (no token needed)
+      const response = await axios.post<ApiResponse<RegisterResponse>>(
+        `${API_BASE_URL}${API_ENDPOINTS.AUTH.REGISTER}`,
+        data,
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
 
-    const result: ApiResponse<RegisterResponse> = await response.json();
+      const result = response.data;
 
-    if (!response.ok) {
+      if (result.success && result.data) {
+        this.setTokens(result.data.tokens);
+        this.setUser(result.data.user);
+        return result.data;
+      }
+
       throw new Error(result.message || 'Registration failed');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<RegisterResponse>;
+        throw new Error(result.message || 'Registration failed');
+      }
+      throw error instanceof Error ? error : new Error('Registration failed');
     }
-
-    if (result.data) {
-      this.setTokens(result.data.tokens);
-      this.setUser(result.data.user);
-    }
-
-    return result.data!;
   }
 
   // Refresh token
@@ -143,41 +160,43 @@ class AuthService {
       throw new Error('No refresh token available');
     }
 
-    const response = await fetch(`${this.baseURL}${API_ENDPOINTS.AUTH.REFRESH}`, {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ refreshToken }),
-    });
+    try {
+      // Use axios without interceptors for refresh (avoid infinite loop)
+      const response = await axios.post<ApiResponse<Tokens>>(
+        `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+        { refreshToken },
+        {
+          headers: { 'Content-Type': 'application/json' },
+        },
+      );
 
-    const result: ApiResponse<Tokens> = await response.json();
+      const result = response.data;
 
-    if (!response.ok) {
+      if (result.success && result.data) {
+        this.setTokens(result.data);
+        return result.data;
+      }
+
       this.clearTokens();
       throw new Error(result.message || 'Token refresh failed');
+    } catch (error) {
+      this.clearTokens();
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<Tokens>;
+        throw new Error(result.message || 'Token refresh failed');
+      }
+      throw error instanceof Error ? error : new Error('Token refresh failed');
     }
-
-    if (result.data) {
-      this.setTokens(result.data);
-    }
-
-    return result.data!;
   }
 
   // Logout
   async logout(): Promise<void> {
     const refreshToken = this.getRefreshToken();
-    const accessToken = this.getAccessToken();
 
-    if (refreshToken && accessToken) {
+    if (refreshToken) {
       try {
-        await fetch(`${this.baseURL}${API_ENDPOINTS.AUTH.LOGOUT}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            Authorization: `Bearer ${accessToken}`,
-          },
-          body: JSON.stringify({ refreshToken }),
-        });
+        // Use apiClient (with interceptors) for authenticated requests
+        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, { refreshToken });
       } catch (error) {
         console.error('Logout error:', error);
       }
@@ -186,31 +205,114 @@ class AuthService {
     this.clearTokens();
   }
 
+  // Logout from all devices
+  async logoutAll(): Promise<void> {
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT_ALL);
+    } catch (error) {
+      console.error('Logout all error:', error);
+    }
+
+    this.clearTokens();
+  }
+
   // Get current user
   async getCurrentUser(): Promise<User> {
-    const accessToken = this.getAccessToken();
-    if (!accessToken) {
-      throw new Error('No access token available');
-    }
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      const response = await apiClient.get<ApiResponse<User>>(API_ENDPOINTS.AUTH.ME);
+      const result = response.data;
 
-    const response = await fetch(`${this.baseURL}${API_ENDPOINTS.AUTH.ME}`, {
-      method: 'GET',
-      headers: {
-        Authorization: `Bearer ${accessToken}`,
-      },
-    });
+      if (result.success && result.data) {
+        this.setUser(result.data);
+        return result.data;
+      }
 
-    const result: ApiResponse<User> = await response.json();
-
-    if (!response.ok) {
       throw new Error(result.message || 'Failed to get user');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<User>;
+        throw new Error(result.message || 'Failed to get user');
+      }
+      throw error instanceof Error ? error : new Error('Failed to get user');
     }
+  }
 
-    if (result.data) {
-      this.setUser(result.data);
+  // Change password
+  async changePassword(
+    currentPassword: string,
+    newPassword: string,
+    confirmPassword: string,
+  ): Promise<void> {
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      const response = await apiClient.post<ApiResponse<null>>(API_ENDPOINTS.AUTH.CHANGE_PASSWORD, {
+        currentPassword,
+        newPassword,
+        confirmPassword,
+      });
+
+      const result = response.data;
+
+      if (!result.success) {
+        throw new Error(result.message || 'Password change failed');
+      }
+
+      // Password changed - tokens are revoked, user must login again
+      this.clearTokens();
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<null>;
+        throw new Error(result.message || 'Password change failed');
+      }
+      throw error instanceof Error ? error : new Error('Password change failed');
     }
+  }
 
-    return result.data!;
+  // Admin: Confirm account
+  async confirmAccount(userId: string): Promise<void> {
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      const response = await apiClient.post<ApiResponse<null>>(API_ENDPOINTS.AUTH.CONFIRM_ACCOUNT, {
+        userId,
+      });
+
+      const result = response.data;
+
+      if (!result.success) {
+        throw new Error(result.message || 'Account confirmation failed');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<null>;
+        throw new Error(result.message || 'Account confirmation failed');
+      }
+      throw error instanceof Error ? error : new Error('Account confirmation failed');
+    }
+  }
+
+  // Admin: Change user role
+  async changeUserRole(userId: string, role: string): Promise<void> {
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      const response = await apiClient.post<ApiResponse<null>>(
+        API_ENDPOINTS.AUTH.CHANGE_USER_ROLE,
+        { userId, role },
+      );
+
+      const result = response.data;
+
+      if (!result.success) {
+        throw new Error(result.message || 'Role change failed');
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<null>;
+        throw new Error(result.message || 'Role change failed');
+      }
+      throw error instanceof Error ? error : new Error('Role change failed');
+    }
   }
 }
 
