@@ -10,7 +10,7 @@ import ProfileWelcome from "src/components/dashboards/modern/ProfileWelcome";
 const Moderndash = () => {
     return (
         <>
-            <div className="grid grid-cols-12 gap-6">
+            {/* <div className="grid grid-cols-12 gap-6">
                 <div className="col-span-12">
                     <ProfileWelcome />
                 </div>
@@ -33,7 +33,7 @@ const Moderndash = () => {
                 <div className="col-span-12">
                     <Footer />
                 </div>
-            </div>
+            </div> */}
 
         </>
     );
