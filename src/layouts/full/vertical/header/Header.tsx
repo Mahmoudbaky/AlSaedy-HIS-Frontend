@@ -88,7 +88,7 @@ const Header = () => {
           </span>
 
           <div className="hidden xl:flex items-center gap-2">
-            <Search />
+            {/* <Search /> */}
           </div>
 
           {/* mobile-logo */}

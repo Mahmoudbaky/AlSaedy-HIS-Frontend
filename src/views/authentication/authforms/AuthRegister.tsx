@@ -10,18 +10,28 @@ import {
   FieldSeparator,
 } from 'src/components/ui/field';
 import { Input } from 'src/components/ui/input';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from 'src/components/ui/select';
 import { Link } from 'react-router';
-import { useForm } from 'react-hook-form';
+import { Controller, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { registerSchema, type RegisterFormData } from 'src/validations/auth.schema';
 import { useRegister } from 'src/hooks/useAuth';
 import { useState } from 'react';
-
+import { useTranslation } from 'react-i18next';
+import Logo from 'src/assets/images/logo.png'
 const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
+  const { t } = useTranslation();
+  const BRANCH_OPTIONS = ['Makkah', 'Jumum'] as const;
   const {
     register,
+    control,
     handleSubmit,
     formState: { errors },
   } = useForm<RegisterFormData>({
@@ -56,9 +66,9 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
             <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <h1 className="text-2xl font-bold">Create your account</h1>
+                  <h1 className="text-2xl font-bold">{t('auth.createYourAccount')}</h1>
                   <p className="text-muted-foreground text-sm text-balance">
-                    Enter your information below to create your account
+                    {t('auth.enterYourInformationBelowToCreateYourAccount')}
                   </p>
                 </div>
 
@@ -69,11 +79,11 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 )}
 
                 <Field data-invalid={!!errors.username}>
-                  <FieldLabel htmlFor="username">Username</FieldLabel>
+                  <FieldLabel htmlFor="username">{t('auth.username')}</FieldLabel>
                   <Input
                     id="username"
                     type="text"
-                    placeholder="johndoe"
+                    placeholder={t('auth.usernamePlaceholder')}
                     variant={errors.username ? 'failure' : 'default'}
                     {...register('username')}
                   />
@@ -83,29 +93,41 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 </Field>
 
                 <Field data-invalid={!!errors.email}>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     variant={errors.email ? 'failure' : 'default'}
                     {...register('email')}
                   />
-                  <FieldDescription>
-                    We&apos;ll use this to contact you. We will not share your email with anyone
-                    else.
-                  </FieldDescription>
+                  <FieldDescription>{t('auth.weWillUseThisToContactYou')}</FieldDescription>
                   {errors.email && <FieldError errors={[{ message: errors.email.message }]} />}
                 </Field>
 
                 <Field data-invalid={!!errors.branch}>
-                  <FieldLabel htmlFor="branch">Branch</FieldLabel>
-                  <Input
-                    id="branch"
-                    type="text"
-                    placeholder="Main Branch"
-                    variant={errors.branch ? 'failure' : 'default'}
-                    {...register('branch')}
+                  <FieldLabel htmlFor="branch">{t('auth.branch')}</FieldLabel>
+                  <Controller
+                    name="branch"
+                    control={control}
+                    render={({ field }) => (
+                      <Select value={field.value} onValueChange={field.onChange}>
+                        <SelectTrigger
+                          id="branch"
+                          className="w-full"
+                          aria-invalid={!!errors.branch}
+                        >
+                          <SelectValue placeholder={t('auth.mainBranch')} />
+                        </SelectTrigger>
+                        <SelectContent>
+                          {BRANCH_OPTIONS.map((branch) => (
+                            <SelectItem key={branch} value={branch}>
+                              {branch}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                    )}
                   />
                   {errors.branch && <FieldError errors={[{ message: errors.branch.message }]} />}
                 </Field>
@@ -113,7 +135,7 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 <Field>
                   <div className="grid grid-cols-2 gap-4">
                     <Field data-invalid={!!errors.password}>
-                      <FieldLabel htmlFor="password">Password</FieldLabel>
+                      <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
                       <Input
                         id="password"
                         type="password"
@@ -125,7 +147,7 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                       )}
                     </Field>
                     <Field data-invalid={!!errors.confirmPassword}>
-                      <FieldLabel htmlFor="confirm-password">Confirm Password</FieldLabel>
+                      <FieldLabel htmlFor="confirm-password">{t('auth.confirmPassword')}</FieldLabel>
                       <Input
                         id="confirm-password"
                         type="password"
@@ -138,18 +160,18 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     </Field>
                   </div>
                   <FieldDescription>
-                    Must be at least 8 characters with uppercase, lowercase, and a number.
+                    {t('auth.mustBeAtLeast8CharactersWithUppercaseLowercaseAndANumber')}
                   </FieldDescription>
                 </Field>
 
                 <Field>
                   <Button type="submit" disabled={isPending}>
-                    {isPending ? 'Creating Account...' : 'Create Account'}
+                    {isPending ? t('auth.creatingAccount') : t('auth.createAccount')}
                   </Button>
                 </Field>
 
-                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
-                  Or continue with
+                {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                  {t('auth.orContinueWith')}
                 </FieldSeparator>
                 <Field className="grid grid-cols-3 gap-4">
                   <Button variant="outline" type="button" disabled>
@@ -159,7 +181,7 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                         fill="currentColor"
                       />
                     </svg>
-                    <span className="sr-only">Sign up with Apple</span>
+                    <span className="sr-only">{t('auth.signUpWithApple')}</span>
                   </Button>
                   <Button variant="outline" type="button" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -168,7 +190,7 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                         fill="currentColor"
                       />
                     </svg>
-                    <span className="sr-only">Sign up with Google</span>
+                    <span className="sr-only">{t('auth.signUpWithGoogle')}</span>
                   </Button>
                   <Button variant="outline" type="button" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
@@ -177,28 +199,29 @@ const AuthRegister = ({ className, ...props }: React.ComponentProps<'div'>) => {
                         fill="currentColor"
                       />
                     </svg>
-                    <span className="sr-only">Sign up with Meta</span>
+                    <span className="sr-only">{t('auth.signUpWithMeta')}</span>
                   </Button>
-                </Field>
+                </Field> */}
                 <FieldDescription className="text-center">
-                  Already have an account? <Link to="/auth/auth2/login">Sign in</Link>
+                  {t('auth.alreadyHaveAnAccount')} <Link to="/auth/auth2/login">{t('auth.signIn')}</Link>
                 </FieldDescription>
               </FieldGroup>
             </form>
-            <div className="bg-muted relative hidden md:block">
+            <div className="relative hidden md:flex md:items-center md:justify-center md:min-h-full">
               <img
-                src="/placeholder.svg"
-                alt="Image"
-                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                src={Logo}
+                alt="logo"
+                width={400}
+                height={400}
               />
             </div>
           </CardContent>
         </Card>
-        <FieldDescription className="px-6 text-center">
-          By clicking continue, you agree to our{' '}
-          <Link to="/auth/auth2/terms-of-service">Terms of Service</Link> and{' '}
-          <Link to="/auth/auth2/privacy-policy">Privacy Policy</Link>.
-        </FieldDescription>
+        {/* <FieldDescription className="px-6 text-center">
+          {t('auth.byClickingContinue')}
+          <Link to="/auth/auth2/terms-of-service">{t('auth.termsOfService')}</Link> and{' '}
+          <Link to="/auth/auth2/privacy-policy">{t('auth.privacyPolicy')}</Link>.
+        </FieldDescription> */}
       </div>
     </>
   );

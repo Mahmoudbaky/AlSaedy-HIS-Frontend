@@ -16,11 +16,13 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { loginSchema, type LoginFormData } from 'src/validations/auth.schema';
 import { useLogin } from 'src/hooks/useAuth';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import Logo from 'src/assets/images/logo.png';
 
 const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
   const location = useLocation();
   const [errorMessage, setErrorMessage] = useState<string | null>(location.state?.message || null);
-
+  const { t } = useTranslation();
   const {
     register,
     handleSubmit,
@@ -59,8 +61,8 @@ const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
             <form className="p-6 md:p-8" onSubmit={handleSubmit(onSubmit)}>
               <FieldGroup>
                 <div className="flex flex-col items-center gap-2 text-center">
-                  <h1 className="text-2xl font-bold">Welcome back</h1>
-                  <p className="text-muted-foreground text-balance">Login to your account</p>
+                  <h1 className="text-2xl font-bold">{t('auth.welcomeBack')}</h1>
+                  <p className="text-muted-foreground text-balance">{t('auth.loginToYourAccount')}</p>
                 </div>
 
                 {errorMessage && (
@@ -70,11 +72,11 @@ const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 )}
 
                 <Field data-invalid={!!errors.email}>
-                  <FieldLabel htmlFor="email">Email</FieldLabel>
+                  <FieldLabel htmlFor="email">{t('auth.email')}</FieldLabel>
                   <Input
                     id="email"
                     type="email"
-                    placeholder="m@example.com"
+                    placeholder={t('auth.emailPlaceholder')}
                     variant={errors.email ? 'failure' : 'default'}
                     {...register('email')}
                   />
@@ -82,10 +84,10 @@ const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
                 </Field>
 
                 <Field data-invalid={!!errors.password}>
-                  <div className="flex items-center">
-                    <FieldLabel htmlFor="password">Password</FieldLabel>
-                    <a href="#" className="ml-auto text-sm underline-offset-2 hover:underline">
-                      Forgot your password?
+                  <div className="flex w-full items-center justify-between gap-4">
+                    <FieldLabel htmlFor="password">{t('auth.password')}</FieldLabel>
+                    <a href="#" className="shrink-0 text-sm underline-offset-2 hover:underline">
+                      {t('auth.forgotPassword')}
                     </a>
                   </div>
                   <Input
@@ -101,14 +103,14 @@ const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
 
                 <Field>
                   <Button type="submit" disabled={isPending}>
-                    {isPending ? 'Logging in...' : 'Login'}
+                    {isPending ? t('auth.loggingIn') : t('auth.login')}
                   </Button>
                 </Field>
 
-                <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
+                {/* <FieldSeparator className="*:data-[slot=field-separator-content]:bg-card">
                   Or continue with
-                </FieldSeparator>
-                <Field className="grid grid-cols-3 gap-4">
+                </FieldSeparator> */}
+                {/* <Field className="grid grid-cols-3 gap-4">
                   <Button variant="outline" type="button" disabled>
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
                       <path
@@ -136,26 +138,27 @@ const AuthLogin = ({ className, ...props }: React.ComponentProps<'div'>) => {
                     </svg>
                     <span className="sr-only">Login with Meta</span>
                   </Button>
-                </Field>
+                </Field> */}
                 <FieldDescription className="text-center">
-                  Don&apos;t have an account? <Link to="/auth/auth2/register">Sign up</Link>
+                  {t('auth.dontHaveAnAccount')} <Link to="/auth/auth2/register">{t('auth.signUp')}</Link>
                 </FieldDescription>
               </FieldGroup>
             </form>
-            <div className="bg-muted relative hidden md:block">
+            <div className="relative hidden md:flex md:items-center md:justify-center md:min-h-full">
               <img
-                src="/placeholder.svg"
-                alt="Image"
-                className="absolute inset-0 h-full w-full object-cover dark:brightness-[0.2] dark:grayscale"
+                src={Logo}
+                alt="logo"
+                width={400}
+                height={400}
               />
             </div>
           </CardContent>
         </Card>
-        <FieldDescription className="px-6 text-center">
-          By clicking continue, you agree to our{' '}
-          <Link to="/auth/auth2/terms-of-service">Terms of Service</Link> and{' '}
-          <Link to="/auth/auth2/privacy-policy">Privacy Policy</Link>.
-        </FieldDescription>
+        {/* <FieldDescription className="px-6 text-center">
+          {t('auth.byClickingContinue')}
+          <Link to="/auth/auth2/terms-of-service">{t('auth.termsOfService')}</Link> and{' '}
+          <Link to="/auth/auth2/privacy-policy">{t('auth.privacyPolicy')}</Link>.
+        </FieldDescription> */}
       </div>
     </>
   );

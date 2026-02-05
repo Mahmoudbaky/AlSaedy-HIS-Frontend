@@ -31,9 +31,9 @@ const renderSidebarItems = (
     const IconComp = item.icon || null;
 
     const iconElement = IconComp ? (
-      <Icon icon={IconComp} height={21} width={21} />
+      <Icon icon={IconComp} height={21} width={21} color="currentColor" />
     ) : (
-      <Icon icon={'ri:checkbox-blank-circle-line'} height={9} width={9} />
+      <Icon icon={'ri:checkbox-blank-circle-line'} height={9} width={9} color="currentColor" />
     );
 
     // Heading
@@ -42,7 +42,7 @@ const renderSidebarItems = (
         <div className="mb-1" key={item.heading}>
           <AMMenu
             subHeading={item.heading}
-            ClassName="hide-menu leading-21 text-sidebar-foreground font-bold uppercase text-xs dark:text-sidebar-foreground"
+            ClassName="hide-menu leading-21 text-white! font-bold uppercase text-xs"
           />
         </div>
       );
@@ -55,7 +55,7 @@ const renderSidebarItems = (
           key={item.id}
           icon={iconElement}
           title={item.name}
-          ClassName="mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground"
+          ClassName="mt-0.5 text-white! bg-transparent "
         >
           {renderSidebarItems(item.children, currentPath, onClose, true)}
         </AMSubmenu>
@@ -66,9 +66,8 @@ const renderSidebarItems = (
     const linkTarget = item.url?.startsWith('https') ? '_blank' : '_self';
 
     const itemClassNames = isSubItem
-      ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-transparent ${isSelected ? '!bg-transparent !text-primary' : ''
-      }`
-      : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground`;
+      ? `mt-0.5 text-white! bg-transparent hover:bg-white/10 ${isSelected ? '!bg-white/10 text-white!' : ''}`
+      : `mt-0.5 text-white! bg-transparent hover:bg-white/10 ${isSelected ? '!bg-white/10 text-white!' : ''}`;
 
     return (
       <div onClick={onClose}>
@@ -78,6 +77,8 @@ const renderSidebarItems = (
           isSelected={isSelected}
           link={item.url || undefined}
           target={linkTarget}
+          data-selected={isSelected ? 'true' : undefined}
+          aria-current={isSelected ? 'page' : undefined}
           badge={!!item.isPro}
           badgeColor="bg-lightsecondary"
           badgeTextColor="text-secondary"
@@ -86,7 +87,7 @@ const renderSidebarItems = (
           component={Link}
           className={`${itemClassNames}`}
         >
-          <span className="truncate flex-1">{item.title || item.name}</span>
+          <span className="truncate flex-1 text-white!">{item.title || item.name}</span>
         </AMMenuItem>
       </div>
     );
@@ -111,7 +112,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
       width={'270px'}
       showTrigger={false}
       mode={sidebarMode}
-      className="app-sidebar fixed top-0 border border-border dark:border-border bg-sidebar dark:bg-sidebar z-10 h-screen"
+      className="app-sidebar fixed top-0 border border-border dark:border-border bg-primary text-white z-10 h-screen"
     >
       {/* Logo */}
       <div className="px-6 flex items-center brand-logo overflow-hidden">
