@@ -28,7 +28,7 @@ const Profile = () => {
           align="end"
           className="w-screen sm:w-[200px] pb-6 pt-4 rounded-sm"
         >
-          <SimpleBar>
+          {/* <SimpleBar>
             {profileData.profileDD.map((items, index) => (
               <DropdownMenuItem
                 key={index}
@@ -52,7 +52,7 @@ const Profile = () => {
                 </Link>
               </DropdownMenuItem>
             ))}
-          </SimpleBar>
+          </SimpleBar> */}
 
           <DropdownMenuSeparator className='my-2' />
 

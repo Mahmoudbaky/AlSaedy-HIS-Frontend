@@ -1,13 +1,12 @@
-import SidebarContent from './sidebaritems';
+import getSidebarContent from './sidebaritems';
 import SimpleBar from 'simplebar-react';
 import { Icon } from '@iconify/react';
-import rocket from 'src/assets/images/backgrounds/rocket.png';
 import FullLogo from '../../shared/logo/FullLogo';
 import { Link, useLocation } from 'react-router';
-import { Button } from 'src/components/ui/button';
 import { useTheme } from 'src/components/provider/theme-provider';
 import { AMLogo, AMMenu, AMMenuItem, AMSidebar, AMSubmenu } from 'tailwind-sidebar';
 import 'tailwind-sidebar/styles.css';
+import { useTranslation } from 'react-i18next';
 
 interface SidebarItemType {
   heading?: string;
@@ -67,9 +66,8 @@ const renderSidebarItems = (
     const linkTarget = item.url?.startsWith('https') ? '_blank' : '_self';
 
     const itemClassNames = isSubItem
-      ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-transparent ${
-          isSelected ? '!bg-transparent !text-primary' : ''
-        }`
+      ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-transparent ${isSelected ? '!bg-transparent !text-primary' : ''
+      }`
       : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground`;
 
     return (
@@ -99,6 +97,8 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
   const location = useLocation();
   const pathname = location.pathname;
   const { theme } = useTheme();
+  const { t } = useTranslation();
+  const sidebarItems = getSidebarContent(t);
 
   // Only allow "light" or "dark" for AMSidebar
   const sidebarMode = theme === 'light' || theme === 'dark' ? theme : undefined;
@@ -111,7 +111,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
       width={'270px'}
       showTrigger={false}
       mode={sidebarMode}
-      className="fixed left-0 top-0 border border-border dark:border-border bg-sidebar dark:bg-sidebar z-10 h-screen"
+      className="app-sidebar fixed top-0 border border-border dark:border-border bg-sidebar dark:bg-sidebar z-10 h-screen"
     >
       {/* Logo */}
       <div className="px-6 flex items-center brand-logo overflow-hidden">
@@ -124,7 +124,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
 
       <SimpleBar className="h-[calc(100vh-100px)]">
         <div className="px-6">
-          {SidebarContent.map((section, index) => (
+          {sidebarItems.map((section, index) => (
             <div key={index}>
               {renderSidebarItems(
                 [

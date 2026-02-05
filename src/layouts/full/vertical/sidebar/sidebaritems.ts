@@ -30,14 +30,15 @@ export interface MenuItem {
 }
 
 import { uniqueId } from 'lodash';
+import type { TFunction } from 'i18next';
 
-const SidebarContent: MenuItem[] = [
+const getSidebarContent = (t: TFunction): MenuItem[] => [
   // ==================== NON-PRO SECTIONS ====================
   {
     // heading: 'Out Patient',
     children: [
       {
-        name: 'Out patient',
+        name: t('sidebar.outPatient'),
         icon: 'solar:chart-2-linear',
         id: uniqueId(),
         url: '#',
@@ -49,7 +50,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Laboratory',
     children: [
       {
-        name: 'Laboratory',
+        name: t('sidebar.laboratory'),
         icon: 'solar:test-tube-linear',
         id: uniqueId(),
         url: '#',
@@ -61,7 +62,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Radiology',
     children: [
       {
-        name: 'Radiology',
+        name: t('sidebar.radiology'),
         icon: 'solar:scanner-linear',
         id: uniqueId(),
         url: '#',
@@ -73,7 +74,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Emergency',
     children: [
       {
-        name: 'Emergency',
+        name: t('sidebar.emergency'),
         icon: 'solar:emergency-linear',
         id: uniqueId(),
         url: '#',
@@ -85,7 +86,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Physiotherapy',
     children: [
       {
-        name: 'Physiotherapy',
+        name: t('sidebar.physiotherapy'),
         icon: 'solar:physiotherapy-linear',
         id: uniqueId(),
         url: '#',
@@ -97,7 +98,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Pharmacy',
     children: [
       {
-        name: 'Pharmacy',
+        name: t('sidebar.pharmacy'),
         icon: 'solar:pill-linear',
         id: uniqueId(),
         url: '#',
@@ -109,7 +110,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Drug Store',
     children: [
       {
-        name: 'Drug Store',
+        name: t('sidebar.drugStore'),
         icon: 'solar:drug-store-linear',
         id: uniqueId(),
         url: '#',
@@ -121,7 +122,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Inventory',
     children: [
       {
-        name: 'Inventory',
+        name: t('sidebar.inventory'),
         icon: 'solar:buildings-2-outline',
         id: uniqueId(),
         url: '#',
@@ -133,7 +134,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'General Ledger',
     children: [
       {
-        name: 'General Ledger',
+        name: t('sidebar.generalLedger'),
         icon: 'solar:notebook-bookmark-line-duotone',
         id: uniqueId(),
         url: '#',
@@ -145,7 +146,7 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Insurance',
     children: [
       {
-        name: 'Insurance',
+        name: t('sidebar.insurance'),
         icon: 'solar:shield-plus-linear',
         id: uniqueId(),
         url: '#',
@@ -157,21 +158,21 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Statistics',
     children: [
       {
-        name: 'Statistics',
+        name: t('sidebar.statistics'),
         icon: 'solar:chart-2-linear',
         id: uniqueId(),
         url: '/',
         isPro: false,
         children: [
           {
-            name: 'Holy Capital Hospital Statistics',
+            name: t('sidebar.holyCapitalHospitalStatistics'),
             icon: 'solar:hospital-linear',
             id: uniqueId(),
             url: '/statistics/holy-capital-hospital',
             isPro: false,
           },
           {
-            name: 'Doctor Statistics',
+            name: t('sidebar.doctorStatistics'),
             icon: 'solar:doctor-linear',
             id: uniqueId(),
             url: '#',
@@ -185,14 +186,14 @@ const SidebarContent: MenuItem[] = [
     // heading: 'Administration',
     children: [
       {
-        name: 'Administration',
+        name: t('sidebar.administration'),
         icon: 'solar:user-circle-linear',
         id: uniqueId(),
         url: '/',
         isPro: false,
         children: [
           {
-            name: 'Users',
+            name: t('sidebar.users'),
             icon: 'solar:user-circle-linear',
             id: uniqueId(),
             url: '/admin/users',
@@ -204,7 +205,7 @@ const SidebarContent: MenuItem[] = [
   },
 ];
 
-export default SidebarContent;
+export default getSidebarContent;
 
 // {
 //   heading: 'Home',

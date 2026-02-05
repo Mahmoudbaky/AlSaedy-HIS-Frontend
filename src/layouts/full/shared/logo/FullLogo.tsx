@@ -1,6 +1,6 @@
 // import Logo from "src/assets/images/logos/dark-logo.svg";
 // import Logowhite from "src/assets/images/logos/light-logo.svg";
-import Logo from "src/assets/images/logo.png"; ``
+import Logo from 'src/assets/images/logo.png';
 
 const FullLogo = () => {
   return (
@@ -8,10 +8,10 @@ const FullLogo = () => {
 
     <>
       {/* Dark Logo   */}
-      <img src={Logo} alt="logo" width={170} height={170} className="block dark:hidden rtl:scale-x-[-1]" />
+      <img src={Logo} alt="logo" width={170} height={170} className="block dark:hidden" />
       {/* <img src={LogoIcon} alt="logo" className="block dark:block rtl:scale-x-[-1]" /> */}
       {/* Light Logo  */}
-      <img src={Logo} alt="logo" width={170} height={170} className="hidden dark:block  rtl:scale-x-[-1]" />
+      <img src={Logo} alt="logo" width={170} height={170} className="hidden dark:block" />
       {/* <img src={Logowhite} alt="logo" className="hidden dark:block rtl:scale-x-[-1]" />
       <img src={LogoIcon} alt="logo" className="hidden dark:block rtl:scale-x-[-1]" /> */}
     </>

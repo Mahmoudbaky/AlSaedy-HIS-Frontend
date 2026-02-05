@@ -1,10 +1,16 @@
 import { useState, useEffect, useEffectEvent } from 'react';
 import { Icon } from '@iconify/react';
+import { useTranslation } from 'react-i18next';
 import Messages from './Messages';
 import FullLogo from '../../shared/logo/FullLogo';
 import Profile from './Profile';
 import SidebarLayout from '../sidebar/Sidebar';
 import { useTheme } from 'src/components/provider/theme-provider';
+import {
+  LANGUAGES,
+  type LanguageCode,
+  setStoredLanguage,
+} from 'src/i18n';
 
 import { Sheet, SheetContent, SheetTitle } from 'src/components/ui/sheet';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
@@ -12,9 +18,19 @@ import Search from './Search';
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
+  const { i18n, t } = useTranslation();
   const [isSticky, setIsSticky] = useState(false);
   const [mobileMenu, setMobileMenu] = useState('');
   const [isOpen, setIsOpen] = useState(false);
+
+  const currentLang: LanguageCode =
+    i18n.language?.startsWith('ar') ? 'ar' : 'en';
+  const nextLang: LanguageCode = currentLang === 'ar' ? 'en' : 'ar';
+
+  const toggleLanguage = () => {
+    setStoredLanguage(nextLang);
+    i18n.changeLanguage(nextLang);
+  };
 
   const handleScroll = useEffectEvent(() => {
     if (window.scrollY > 50) {
@@ -82,6 +98,22 @@ const Header = () => {
 
           <div className="xl:!block !hidden md:!hidden">
             <div className="flex gap-0 items-center">
+              {/* Language Switcher */}
+              <button
+                type="button"
+                onClick={toggleLanguage}
+                className="hover:text-primary px-15 group dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"
+                title={t('header.changeLanguage')}
+                aria-label={t('header.changeLanguage')}
+              >
+                <span className="flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2 group-hover:after:bg-lightprimary">
+                  <Icon icon="tabler:language" width="20" />
+                </span>
+                <span className="sr-only">
+                  {currentLang === 'ar' ? LANGUAGES.en.label : LANGUAGES.ar.label}
+                </span>
+              </button>
+
               {/* Theme Toggle */}
               {theme === 'light' ? (
                 <div
@@ -119,6 +151,21 @@ const Header = () => {
           <span className="flex xl:hidden " onClick={handleMobileMenu}>
             <div className="xl:hidden flex w-full">
               <div className="flex justify-center items-center">
+                {/* Mobile Language Switcher */}
+                <button
+                  type="button"
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    toggleLanguage();
+                  }}
+                  className="hover:text-primary px-1 sm:px-15 group dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"
+                  title={t('header.changeLanguage')}
+                  aria-label={t('header.changeLanguage')}
+                >
+                  <span className="flex items-center justify-center relative after:absolute after:w-10 after:h-10 after:rounded-full after:-top-1/2 group-hover:after:bg-lightprimary">
+                    <Icon icon="tabler:language" width="20" />
+                  </span>
+                </button>
                 {theme === 'light' ? (
                   <div
                     className="hover:text-primary px-1 sm:px-15 group  dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"

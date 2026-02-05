@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useForm, Controller } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { format } from 'date-fns';
@@ -19,45 +20,31 @@ import { type StatisticsFilters } from 'src/services/statistics.service';
 import { Loader2, AlertCircle, Calendar as CalendarIcon } from 'lucide-react';
 import { cn } from 'src/lib/utils';
 
-const BCrumb = [
-  {
-    to: '/',
-    title: 'Home',
-  },
-  {
-    to: '/statistics/holy-capital-hospital',
-    title: 'Statistics',
-  },
-  {
-    title: 'Holy Capital Hospital Statistics',
-  },
-];
-
 // Clinic names mapping
-const CLINIC_NAMES: Record<string, string> = {
-  internalCount: 'Internal Medicine',
-  dentalCount: 'Dental',
-  pediatricsCount: 'Pediatrics',
-  obgyCount: 'Obstetrics & Gynecology',
-  orthopedicCount: 'Orthopedic',
-  chestCount: 'Chest',
-  ophthalmologyCount: 'Ophthalmology',
-  urologyCount: 'Urology',
-  entCount: 'ENT (Ear, Nose, Throat)',
-  surgeryCount: 'Surgery',
-  dermatologyVenCount: 'Dermatology & Venereology',
-  emergencyCount: 'Emergency',
-  emergency2Count: 'Emergency 2',
-  radiologyDeptCount: 'Radiology Department',
-  laboratoryDeptCount: 'Laboratory Department',
-  physiotherapyDietCount: 'Physiotherapy & Diet',
-  cardiologyClinicCount: 'Cardiology Clinic',
-  opticalsCount: 'Opticals',
-  neurologyCount: 'Neurology',
-  physiotherapyCount: 'Physiotherapy',
-  psychiatryCount: 'Psychiatry',
-  operationsCount: 'Operations',
-  birthCasesCount: 'Birth Cases',
+const CLINIC_NAME_KEYS: Record<string, string> = {
+  internalCount: 'statistics.clinics.internalMedicine',
+  dentalCount: 'statistics.clinics.dental',
+  pediatricsCount: 'statistics.clinics.pediatrics',
+  obgyCount: 'statistics.clinics.obstetricsGynecology',
+  orthopedicCount: 'statistics.clinics.orthopedic',
+  chestCount: 'statistics.clinics.chest',
+  ophthalmologyCount: 'statistics.clinics.ophthalmology',
+  urologyCount: 'statistics.clinics.urology',
+  entCount: 'statistics.clinics.ent',
+  surgeryCount: 'statistics.clinics.surgery',
+  dermatologyVenCount: 'statistics.clinics.dermatologyVenereology',
+  emergencyCount: 'statistics.clinics.emergency',
+  emergency2Count: 'statistics.clinics.emergency2',
+  radiologyDeptCount: 'statistics.clinics.radiologyDepartment',
+  laboratoryDeptCount: 'statistics.clinics.laboratoryDepartment',
+  physiotherapyDietCount: 'statistics.clinics.physiotherapyDiet',
+  cardiologyClinicCount: 'statistics.clinics.cardiologyClinic',
+  opticalsCount: 'statistics.clinics.opticals',
+  neurologyCount: 'statistics.clinics.neurology',
+  physiotherapyCount: 'statistics.clinics.physiotherapy',
+  psychiatryCount: 'statistics.clinics.psychiatry',
+  operationsCount: 'statistics.clinics.operations',
+  birthCasesCount: 'statistics.clinics.birthCases',
 };
 
 // Default to last month
@@ -72,6 +59,7 @@ const getDefaultToDate = () => {
 };
 
 const HolyCapitalHospitals = () => {
+  const { t } = useTranslation();
   const [fromDateOpen, setFromDateOpen] = useState(false);
   const [toDateOpen, setToDateOpen] = useState(false);
   const [filters, setFilters] = useState<StatisticsFilters | null>(() => ({
@@ -177,9 +165,15 @@ const HolyCapitalHospitals = () => {
 
   const totals = calculateTotals();
 
+  const BCrumb = [
+    { to: '/', title: t('common.home') },
+    { to: '/statistics/holy-capital-hospital', title: t('common.statistics') },
+    { title: t('statistics.pageTitle') },
+  ];
+
   return (
     <>
-      <BreadcrumbComp title="Holy Capital Hospital Statistics" items={BCrumb} />
+      <BreadcrumbComp title={t('statistics.pageTitle')} items={BCrumb} />
 
       <div className="space-y-6">
         {/* Date Filter Form */}
@@ -187,7 +181,7 @@ const HolyCapitalHospitals = () => {
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
               <CalendarIcon className="h-5 w-5" />
-              Date Range Filter
+              {t('statistics.dateRangeFilter')}
             </CardTitle>
           </CardHeader>
           <CardContent>
@@ -195,7 +189,7 @@ const HolyCapitalHospitals = () => {
               <FieldGroup>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                   <Field data-invalid={!!errors.fromDate}>
-                    <FieldLabel htmlFor="fromDate">From Date</FieldLabel>
+                    <FieldLabel htmlFor="fromDate">{t('statistics.fromDate')}</FieldLabel>
                     <Controller
                       name="fromDate"
                       control={control}
@@ -213,7 +207,7 @@ const HolyCapitalHospitals = () => {
                               <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
                               {field.value
                                 ? format(new Date(field.value), 'MMM dd, yyyy')
-                                : 'From Date'}
+                                : t('statistics.fromDate')}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -236,7 +230,7 @@ const HolyCapitalHospitals = () => {
                   </Field>
 
                   <Field data-invalid={!!errors.toDate}>
-                    <FieldLabel htmlFor="toDate">To Date</FieldLabel>
+                    <FieldLabel htmlFor="toDate">{t('statistics.toDate')}</FieldLabel>
                     <Controller
                       name="toDate"
                       control={control}
@@ -254,7 +248,7 @@ const HolyCapitalHospitals = () => {
                               <CalendarIcon className="ltr:mr-2 rtl:ml-2 h-4 w-4" />
                               {field.value
                                 ? format(new Date(field.value), 'MMM dd, yyyy')
-                                : 'To Date'}
+                                : t('statistics.toDate')}
                             </Button>
                           </PopoverTrigger>
                           <PopoverContent className="w-auto p-0" align="start">
@@ -278,10 +272,10 @@ const HolyCapitalHospitals = () => {
                     {isLoading ? (
                       <>
                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                        Loading...
+                        {t('common.loading')}
                       </>
                     ) : (
-                      'Fetch Statistics'
+                      t('statistics.fetchStatistics')
                     )}
                   </Button>
                 </div>
@@ -294,11 +288,11 @@ const HolyCapitalHospitals = () => {
         {error && (
           <Alert variant="destructive">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>Error</AlertTitle>
+            <AlertTitle>{t('common.error')}</AlertTitle>
             <AlertDescription>
               {error instanceof Error
                 ? error.message
-                : 'Failed to fetch statistics. Please try again.'}
+                : t('statistics.errorDescription')}
             </AlertDescription>
           </Alert>
         )}
@@ -309,7 +303,7 @@ const HolyCapitalHospitals = () => {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Total Patients
+                  {t('statistics.totalPatients')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -320,7 +314,7 @@ const HolyCapitalHospitals = () => {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Saudi Patients
+                  {t('statistics.saudiPatients')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -333,7 +327,7 @@ const HolyCapitalHospitals = () => {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Non-Saudi Patients
+                  {t('statistics.nonSaudiPatients')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -346,7 +340,7 @@ const HolyCapitalHospitals = () => {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Male Patients
+                  {t('statistics.malePatients')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -357,7 +351,7 @@ const HolyCapitalHospitals = () => {
             <Card>
               <CardHeader className="pb-3">
                 <CardTitle className="text-sm font-medium text-muted-foreground">
-                  Female Patients
+                  {t('statistics.femalePatients')}
                 </CardTitle>
               </CardHeader>
               <CardContent>
@@ -371,18 +365,20 @@ const HolyCapitalHospitals = () => {
         {isLoading && filters && (
           <div className="flex items-center justify-center py-12">
             <Loader2 className="h-8 w-8 animate-spin text-primary" />
-            <span className="ml-2 text-muted-foreground">Loading statistics...</span>
+            <span className="ml-2 text-muted-foreground">{t('statistics.loadingStats')}</span>
           </div>
         )}
 
         {/* Statistics Grid */}
         {statistics && !isLoading && (
           <div>
-            <h2 className="text-xl font-semibold mb-4">Clinic Statistics</h2>
+            <h2 className="text-xl font-semibold mb-4">{t('statistics.clinicStatistics')}</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4">
               {Object.entries(statistics).map(([key, clinicData]) => {
                 const counts = getClinicCounts(key, clinicData);
-                const clinicName = CLINIC_NAMES[key] || key;
+                const clinicName = CLINIC_NAME_KEYS[key]
+                  ? t(CLINIC_NAME_KEYS[key])
+                  : key;
 
                 return (
                   <ClinicStatsCard
@@ -403,9 +399,9 @@ const HolyCapitalHospitals = () => {
         {!filters && !isLoading && !error && (
           <Alert variant="info">
             <AlertCircle className="h-4 w-4" />
-            <AlertTitle>No Data</AlertTitle>
+            <AlertTitle>{t('statistics.noDataTitle')}</AlertTitle>
             <AlertDescription>
-              Please select a date range and click &quot;Fetch Statistics&quot; to view data.
+              {t('statistics.noDataDescription')}
             </AlertDescription>
           </Alert>
         )}

@@ -19,17 +19,13 @@ import {
 import { Badge } from 'src/components/ui/badge';
 import { useUsersForAdmin, useConfirmAccount, useChangeUserRole } from 'src/hooks/Administration/useUsers';
 import { CheckCircle2, Loader2 } from 'lucide-react';
-
-const BCrumb = [
-  { to: '/', title: 'Home' },
-  { to: '/admin/users', title: 'Administration' },
-  { title: 'Users' },
-];
+import { useTranslation } from 'react-i18next';
 
 const BRANCH_OPTIONS = ['Makkah', 'Jumum'] as const;
 const ROLE_OPTIONS = ['admin', 'user'] as const;
 
 const Users = () => {
+  const { t } = useTranslation();
   const { data: users = [], isLoading, error } = useUsersForAdmin();
   const confirmAccountMutation = useConfirmAccount();
   const changeRoleMutation = useChangeUserRole();
@@ -50,7 +46,11 @@ const Users = () => {
   if (isLoading) {
     return (
       <>
-        <BreadcrumbComp title="Users" items={BCrumb} />
+        <BreadcrumbComp title={t('users.pageTitle')} items={[
+          { to: '/', title: t('common.home') },
+          { to: '/admin/users', title: t('common.administration') },
+          { title: t('common.users') },
+        ]} />
         <CardBox className="p-8 flex items-center justify-center">
           <Loader2 className="h-8 w-8 animate-spin text-primary" />
         </CardBox>
@@ -61,36 +61,46 @@ const Users = () => {
   if (error) {
     return (
       <>
-        <BreadcrumbComp title="Users" items={BCrumb} />
+        <BreadcrumbComp title={t('users.pageTitle')} items={[
+          { to: '/', title: t('common.home') },
+          { to: '/admin/users', title: t('common.administration') },
+          { title: t('common.users') },
+        ]} />
         <CardBox className="p-8">
-          <p className="text-destructive">Failed to load users. Please try again.</p>
+          <p className="text-destructive">{t('users.loadError')}</p>
         </CardBox>
       </>
     );
   }
 
+  const BCrumb = [
+    { to: '/', title: t('common.home') },
+    { to: '/admin/users', title: t('common.administration') },
+    { title: t('common.users') },
+  ];
+
   return (
     <>
-      <BreadcrumbComp title="Users" items={BCrumb} />
+      <BreadcrumbComp title={t('users.pageTitle')} items={BCrumb} />
       <CardBox className="p-6">
-        <h3 className="text-xl font-semibold mb-4">Users Management</h3>
+        <h3 className="text-xl font-semibold mb-4">{t('users.managementTitle')}</h3>
         <div className="rounded-lg border border-border overflow-hidden">
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead className="text-sm font-semibold">Username</TableHead>
-                <TableHead className="text-sm font-semibold">Email</TableHead>
-                <TableHead className="text-sm font-semibold">Branch</TableHead>
-                <TableHead className="text-sm font-semibold">Role</TableHead>
-                <TableHead className="text-sm font-semibold">Confirmed</TableHead>
-                <TableHead className="text-sm font-semibold text-end">Actions</TableHead>
+                <TableHead className="text-sm font-semibold">{t('users.username')}</TableHead>
+                <TableHead className="text-sm font-semibold">{t('users.email')}</TableHead>
+                <TableHead className="text-sm font-semibold">{t('users.branch')}</TableHead>
+                <TableHead className="text-sm font-semibold">{t('users.role')}</TableHead>
+                <TableHead className="text-sm font-semibold">{t('users.confirmed')}</TableHead>
+                <TableHead className="text-sm font-semibold text-end">{t('users.actions')}</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
               {users.length === 0 ? (
                 <TableRow>
                   <TableCell colSpan={6} className="text-center py-8 text-muted-foreground">
-                    No users found
+                    {t('users.noUsers')}
                   </TableCell>
                 </TableRow>
               ) : (
@@ -104,7 +114,7 @@ const Users = () => {
                         onValueChange={(value) => handleBranchChange(user.id, value)}
                       >
                         <SelectTrigger className="w-[140px] h-9">
-                          <SelectValue placeholder="Select branch" />
+                          <SelectValue placeholder={t('users.selectBranch')} />
                         </SelectTrigger>
                         <SelectContent>
                           {BRANCH_OPTIONS.map((branch) => (
@@ -121,7 +131,7 @@ const Users = () => {
                         onValueChange={(value) => handleRoleChange(user.id, value)}
                       >
                         <SelectTrigger className="w-[120px] h-9">
-                          <SelectValue placeholder="Select role" />
+                          <SelectValue placeholder={t('users.selectRole')} />
                         </SelectTrigger>
                         <SelectContent>
                           {ROLE_OPTIONS.map((role) => (
@@ -134,10 +144,12 @@ const Users = () => {
                     </TableCell>
                     <TableCell>
                       {user.confirmed ? (
-                        <Badge className="bg-success/20 text-success">Confirmed</Badge>
+                        <Badge className="bg-success/20 text-success">
+                          {t('users.confirmedLabel')}
+                        </Badge>
                       ) : (
                         <Badge variant="secondary" className="bg-warning/20 text-warning">
-                          Pending
+                          {t('users.pendingLabel')}
                         </Badge>
                       )}
                     </TableCell>
@@ -158,7 +170,7 @@ const Users = () => {
                           ) : (
                             <>
                               <CheckCircle2 className="h-4 w-4 mr-1" />
-                              Confirm
+                              {t('users.confirm')}
                             </>
                           )}
                         </Button>

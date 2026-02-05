@@ -1,6 +1,7 @@
 import { Card, CardContent, CardHeader, CardTitle } from 'src/components/ui/card';
 import { Badge } from 'src/components/ui/badge';
 import { cn } from 'src/lib/utils';
+import { useTranslation } from 'react-i18next';
 
 interface ClinicStatsCardProps {
   clinicName: string;
@@ -19,6 +20,7 @@ export const ClinicStatsCard = ({
   nonSaudiFemale,
   className,
 }: ClinicStatsCardProps) => {
+  const { t } = useTranslation();
   const total = saudiMale + saudiFemale + nonSaudiMale + nonSaudiFemale;
   const saudiTotal = saudiMale + saudiFemale;
   const nonSaudiTotal = nonSaudiMale + nonSaudiFemale;
@@ -37,7 +39,7 @@ export const ClinicStatsCard = ({
       <CardContent className="space-y-4">
         {/* Total Badge */}
         <div className="flex items-center justify-between pb-2 border-b border-border">
-          <span className="text-sm font-medium text-muted-foreground">Total Patients</span>
+          <span className="text-sm font-medium text-muted-foreground">{t('statistics.totalPatients')}</span>
           <Badge variant="outline" className="text-base font-semibold px-3 py-1">
             {formatNumber(total)}
           </Badge>
@@ -47,18 +49,18 @@ export const ClinicStatsCard = ({
         <div className="grid grid-cols-2 gap-3">
           {/* Saudi Patients */}
           <div className="space-y-2 p-3 rounded-lg bg-green-50 dark:bg-green-950/20 border border-green-200 dark:border-green-800">
-            <div className="text-xs font-medium text-green-700 dark:text-green-400">Saudi</div>
+            <div className="text-xs font-medium text-green-700 dark:text-green-400">{t('statistics.saudiPatients')}</div>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Male:</span>
+                <span className="text-muted-foreground">{t('statistics.malePatients')}:</span>
                 <span className="font-semibold">{formatNumber(saudiMale)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Female:</span>
+                <span className="text-muted-foreground">{t('statistics.femalePatients')}:</span>
                 <span className="font-semibold">{formatNumber(saudiFemale)}</span>
               </div>
               <div className="flex justify-between pt-1 border-t border-green-200 dark:border-green-800">
-                <span className="font-medium text-green-700 dark:text-green-400">Total:</span>
+                <span className="font-medium text-green-700 dark:text-green-400">{t('statistics.totalPatients')}:</span>
                 <span className="font-bold text-green-700 dark:text-green-400">
                   {formatNumber(saudiTotal)}
                 </span>
@@ -68,18 +70,18 @@ export const ClinicStatsCard = ({
 
           {/* Non-Saudi Patients */}
           <div className="space-y-2 p-3 rounded-lg bg-blue-50 dark:bg-blue-950/20 border border-blue-200 dark:border-blue-800">
-            <div className="text-xs font-medium text-blue-700 dark:text-blue-400">Non-Saudi</div>
+            <div className="text-xs font-medium text-blue-700 dark:text-blue-400">{t('statistics.nonSaudiPatients')}</div>
             <div className="space-y-1 text-sm">
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Male:</span>
+                <span className="text-muted-foreground">{t('statistics.malePatients')}:</span>
                 <span className="font-semibold">{formatNumber(nonSaudiMale)}</span>
               </div>
               <div className="flex justify-between">
-                <span className="text-muted-foreground">Female:</span>
+                <span className="text-muted-foreground">{t('statistics.femalePatients')}:</span>
                 <span className="font-semibold">{formatNumber(nonSaudiFemale)}</span>
               </div>
               <div className="flex justify-between pt-1 border-t border-blue-200 dark:border-blue-800">
-                <span className="font-medium text-blue-700 dark:text-blue-400">Total:</span>
+                <span className="font-medium text-blue-700 dark:text-blue-400">{t('statistics.totalPatients')}:</span>
                 <span className="font-bold text-blue-700 dark:text-blue-400">
                   {formatNumber(nonSaudiTotal)}
                 </span>
@@ -91,11 +93,11 @@ export const ClinicStatsCard = ({
         {/* Gender Summary */}
         <div className="flex items-center justify-between pt-2 border-t border-border text-sm">
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Male:</span>
+            <span className="text-muted-foreground">{t('statistics.malePatients')}:</span>
             <span className="font-semibold">{formatNumber(maleTotal)}</span>
           </div>
           <div className="flex items-center gap-2">
-            <span className="text-muted-foreground">Female:</span>
+            <span className="text-muted-foreground">{t('statistics.femalePatients')}:</span>
             <span className="font-semibold">{formatNumber(femaleTotal)}</span>
           </div>
         </div>
