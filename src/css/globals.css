@@ -1,5 +1,7 @@
 @import 'tailwindcss';
 @import url('https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wdth,wght@12..96,75..100,200..800&family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Rubik:ital,wght@0,300..900;1,300..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Google+Sans:ital,opsz,wght@0,17..18,400..700;1,17..18,400..700&display=swap');
 @import './app.css';
 
 @import './layouts/container.css' layer(utilities);
@@ -17,7 +19,11 @@ main {
 }
 
 body {
-  font-family: 'DM Sans', sans-serif;
+  font-family: var(--font-english);
+}
+
+html[lang='ar'] body {
+  font-family: var(--font-arabic);
 }
 
 @theme {
@@ -104,6 +110,10 @@ body {
 }
 
 :root {
+  --font-google-sans: 'Google Sans', sans-serif;
+  --font-english: var(--font-google-sans);
+  --font-rubik: 'Rubik', sans-serif;
+  --font-arabic: var(--font-rubik);
   --radius: 10px;
   --background: var(--white);
   --foreground: var(--dark);
