@@ -3,6 +3,7 @@
 import { lazy } from 'react';
 import { Navigate, createBrowserRouter } from 'react-router';
 import Loadable from '../layouts/full/shared/loadable/Loadable';
+import ProtectedRoute from '../components/auth/ProtectedRoute';
 
 /* ***Layouts**** */
 const FullLayout = Loadable(lazy(() => import('../layouts/full/FullLayout')));
@@ -44,24 +45,29 @@ const Users = Loadable(lazy(() => import('../views/administration/Users')));
 
 const Router = [
   {
-    path: '/',
-    element: <FullLayout />,
+    element: <ProtectedRoute />,
     children: [
-      { path: '/', exact: true, element: <Modern /> },
-      // { path: '/sample-page', exact: true, element: <SamplePage /> },
-      { path: '*', element: <Navigate to="/auth/404" /> },
+      {
+        path: '/',
+        element: <FullLayout />,
+        children: [
+          { path: '/', exact: true, element: <Modern /> },
+          // { path: '/sample-page', exact: true, element: <SamplePage /> },
+          { path: '*', element: <Navigate to="/auth/404" /> },
 
-      { path: '/apps/notes', element: <Notes /> },
-      { path: '/utilities/form', element: <Form /> },
-      { path: '/utilities/table', element: <Table /> },
-      { path: '/apps/tickets', element: <Tickets /> },
-      { path: '/apps/tickets/create', element: <CreateTickets /> },
-      { path: '/apps/blog/post', element: <Blog /> },
-      { path: '/apps/blog/detail/:id', element: <BlogDetail /> },
-      { path: '/user-profile', element: <UserProfile /> },
-      { path: '/icons/iconify', element: <SolarIcon /> },
-      { path: '/statistics/holy-capital-hospital', element: <HolyCapitalHospitalStatistics /> },
-      { path: '/admin/users', element: <Users /> },
+          { path: '/apps/notes', element: <Notes /> },
+          { path: '/utilities/form', element: <Form /> },
+          { path: '/utilities/table', element: <Table /> },
+          { path: '/apps/tickets', element: <Tickets /> },
+          { path: '/apps/tickets/create', element: <CreateTickets /> },
+          { path: '/apps/blog/post', element: <Blog /> },
+          { path: '/apps/blog/detail/:id', element: <BlogDetail /> },
+          { path: '/user-profile', element: <UserProfile /> },
+          { path: '/icons/iconify', element: <SolarIcon /> },
+          { path: '/statistics/holy-capital-hospital', element: <HolyCapitalHospitalStatistics /> },
+          { path: '/admin/users', element: <Users /> },
+        ],
+      },
     ],
   },
   {
