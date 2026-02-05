@@ -34,6 +34,126 @@ import { uniqueId } from 'lodash';
 const SidebarContent: MenuItem[] = [
   // ==================== NON-PRO SECTIONS ====================
   {
+    // heading: 'Out Patient',
+    children: [
+      {
+        name: 'Out patient',
+        icon: 'solar:chart-2-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Laboratory',
+    children: [
+      {
+        name: 'Laboratory',
+        icon: 'solar:test-tube-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Radiology',
+    children: [
+      {
+        name: 'Radiology',
+        icon: 'solar:scanner-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Emergency',
+    children: [
+      {
+        name: 'Emergency',
+        icon: 'solar:emergency-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Physiotherapy',
+    children: [
+      {
+        name: 'Physiotherapy',
+        icon: 'solar:physiotherapy-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Pharmacy',
+    children: [
+      {
+        name: 'Pharmacy',
+        icon: 'solar:pill-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Drug Store',
+    children: [
+      {
+        name: 'Drug Store',
+        icon: 'solar:drug-store-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Inventory',
+    children: [
+      {
+        name: 'Inventory',
+        icon: 'solar:buildings-2-outline',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'General Ledger',
+    children: [
+      {
+        name: 'General Ledger',
+        icon: 'solar:notebook-bookmark-line-duotone',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
+    // heading: 'Insurance',
+    children: [
+      {
+        name: 'Insurance',
+        icon: 'solar:shield-plus-linear',
+        id: uniqueId(),
+        url: '#',
+        isPro: false,
+      },
+    ],
+  },
+  {
     // heading: 'Statistics',
     children: [
       {
@@ -48,6 +168,13 @@ const SidebarContent: MenuItem[] = [
             icon: 'solar:hospital-linear',
             id: uniqueId(),
             url: '/statistics/holy-capital-hospital',
+            isPro: false,
+          },
+          {
+            name: 'Doctor Statistics',
+            icon: 'solar:doctor-linear',
+            id: uniqueId(),
+            url: '#',
             isPro: false,
           },
         ],

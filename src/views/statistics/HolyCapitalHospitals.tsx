@@ -25,6 +25,10 @@ const BCrumb = [
     title: 'Home',
   },
   {
+    to: '/statistics/holy-capital-hospital',
+    title: 'Statistics',
+  },
+  {
     title: 'Holy Capital Hospital Statistics',
   },
 ];
