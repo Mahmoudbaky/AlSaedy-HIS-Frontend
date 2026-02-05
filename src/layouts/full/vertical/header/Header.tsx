@@ -115,7 +115,7 @@ const Header = () => {
               </button>
 
               {/* Theme Toggle */}
-              {theme === 'light' ? (
+              {/* {theme === 'light' ? (
                 <div
                   className="hover:text-primary px-15 group dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"
                   onClick={toggleMode}
@@ -138,7 +138,7 @@ const Header = () => {
                     />
                   </span>
                 </div>
-              )}
+              )} */}
 
               {/* Messages Dropdown */}
               {/* <Messages /> */}
