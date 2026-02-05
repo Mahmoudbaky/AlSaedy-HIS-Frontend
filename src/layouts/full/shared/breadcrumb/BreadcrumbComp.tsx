@@ -1,6 +1,6 @@
 import { JSX } from 'react';
 import CardBox from '../../../../components/shared/CardBox';
-import breadcrumbBg from 'src/assets/images/dashboard/customer-support-img.png';
+// import breadcrumbBg from 'src/assets/images/dashboard/customer-support-img.png';
 import { Link } from 'react-router';
 
 interface BreadcrumbItem {

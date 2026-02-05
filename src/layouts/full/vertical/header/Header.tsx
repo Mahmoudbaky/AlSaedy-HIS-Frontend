@@ -14,7 +14,7 @@ import {
 
 import { Sheet, SheetContent, SheetTitle } from 'src/components/ui/sheet';
 import { VisuallyHidden } from '@radix-ui/react-visually-hidden';
-import Search from './Search';
+// import Search from './Search';
 
 const Header = () => {
   const { theme, setTheme } = useTheme();
@@ -115,7 +115,7 @@ const Header = () => {
               </button>
 
               {/* Theme Toggle */}
-              {/* {theme === 'light' ? (
+              {theme === 'light' ? (
                 <div
                   className="hover:text-primary px-15 group dark:hover:text-primary focus:ring-0 rounded-full flex justify-center items-center cursor-pointer text-foreground dark:text-muted-foreground relative"
                   onClick={toggleMode}
@@ -138,7 +138,7 @@ const Header = () => {
                     />
                   </span>
                 </div>
-              )} */}
+              )}
 
               {/* Messages Dropdown */}
               {/* <Messages /> */}
