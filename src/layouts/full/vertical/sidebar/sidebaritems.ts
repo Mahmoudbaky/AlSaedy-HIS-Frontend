@@ -39,7 +39,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.outPatient'),
-        icon: 'solar:chart-2-linear',
+        icon: 'chart',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -51,7 +51,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.laboratory'),
-        icon: 'solar:test-tube-linear',
+        icon: 'testTube',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -63,7 +63,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.radiology'),
-        icon: 'solar:scanner-linear',
+        icon: 'scanner',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -75,7 +75,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.emergency'),
-        icon: 'solar:emergency-linear',
+        icon: 'ambulance',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -87,7 +87,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.physiotherapy'),
-        icon: 'solar:physiotherapy-linear',
+        icon: 'activity',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -99,7 +99,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.pharmacy'),
-        icon: 'solar:pill-linear',
+        icon: 'pill',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -111,7 +111,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.drugStore'),
-        icon: 'solar:drug-store-linear',
+        icon: 'store',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -123,7 +123,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.inventory'),
-        icon: 'solar:buildings-2-outline',
+        icon: 'building',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -135,7 +135,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.generalLedger'),
-        icon: 'solar:notebook-bookmark-line-duotone',
+        icon: 'bookMarked',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -147,7 +147,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.insurance'),
-        icon: 'solar:shield-plus-linear',
+        icon: 'shieldPlus',
         id: uniqueId(),
         url: '#',
         isPro: false,
@@ -159,21 +159,21 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.statistics'),
-        icon: 'solar:chart-2-linear',
+        icon: 'chart',
         id: uniqueId(),
         url: '/',
         isPro: false,
         children: [
           {
             name: t('sidebar.holyCapitalHospitalStatistics'),
-            icon: 'solar:hospital-linear',
+            icon: 'hospital',
             id: uniqueId(),
             url: '/statistics/holy-capital-hospital',
             isPro: false,
           },
           {
             name: t('sidebar.doctorStatistics'),
-            icon: 'solar:doctor-linear',
+            icon: 'stethoscope',
             id: uniqueId(),
             url: '#',
             isPro: false,
@@ -187,14 +187,14 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
     children: [
       {
         name: t('sidebar.administration'),
-        icon: 'solar:user-circle-linear',
+        icon: 'userCircle',
         id: uniqueId(),
         url: '/',
         isPro: false,
         children: [
           {
             name: t('sidebar.users'),
-            icon: 'solar:user-circle-linear',
+            icon: 'userCircle',
             id: uniqueId(),
             url: '/admin/users',
             isPro: false,

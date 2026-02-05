@@ -1,12 +1,45 @@
 import getSidebarContent from './sidebaritems';
 import SimpleBar from 'simplebar-react';
-import { Icon } from '@iconify/react';
+import {
+  Activity,
+  Ambulance,
+  BookMarked,
+  Building2,
+  ChartBar,
+  Circle,
+  CircleUser,
+  Hospital,
+  Pill,
+  ScanLine,
+  ShieldPlus,
+  Stethoscope,
+  Store,
+  TestTube,
+} from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 import FullLogo from '../../shared/logo/FullLogo';
 import { Link, useLocation } from 'react-router';
 import { useTheme } from 'src/components/provider/theme-provider';
 import { AMLogo, AMMenu, AMMenuItem, AMSidebar, AMSubmenu } from 'tailwind-sidebar';
 import 'tailwind-sidebar/styles.css';
 import { useTranslation } from 'react-i18next';
+
+/** Lucide icon keys used in sidebaritems.ts */
+const SIDEBAR_ICON_MAP: Record<string, LucideIcon> = {
+  chart: ChartBar,
+  testTube: TestTube,
+  scanner: ScanLine,
+  ambulance: Ambulance,
+  activity: Activity,
+  pill: Pill,
+  store: Store,
+  building: Building2,
+  bookMarked: BookMarked,
+  shieldPlus: ShieldPlus,
+  hospital: Hospital,
+  stethoscope: Stethoscope,
+  userCircle: CircleUser,
+};
 
 interface SidebarItemType {
   heading?: string;
@@ -28,12 +61,12 @@ const renderSidebarItems = (
 ) => {
   return items.map((item) => {
     const isSelected = currentPath === item?.url;
-    const IconComp = item.icon || null;
+    const IconComp = item.icon ? SIDEBAR_ICON_MAP[item.icon] : null;
 
     const iconElement = IconComp ? (
-      <Icon icon={IconComp} height={21} width={21} color="currentColor" />
+      <IconComp size={21} className="shrink-0 text-current" />
     ) : (
-      <Icon icon={'ri:checkbox-blank-circle-line'} height={9} width={9} color="currentColor" />
+      <Circle size={9} className="shrink-0 text-current" strokeWidth={2} />
     );
 
     // Heading
