@@ -34,7 +34,7 @@ import { uniqueId } from 'lodash';
 const SidebarContent: MenuItem[] = [
   // ==================== NON-PRO SECTIONS ====================
   {
-    heading: 'Statistics',
+    // heading: 'Statistics',
     children: [
       {
         name: 'Statistics',
@@ -48,6 +48,27 @@ const SidebarContent: MenuItem[] = [
             icon: 'solar:hospital-linear',
             id: uniqueId(),
             url: '/statistics/holy-capital-hospital',
+            isPro: false,
+          },
+        ],
+      },
+    ],
+  },
+  {
+    // heading: 'Administration',
+    children: [
+      {
+        name: 'Administration',
+        icon: 'solar:user-circle-linear',
+        id: uniqueId(),
+        url: '/',
+        isPro: false,
+        children: [
+          {
+            name: 'Users',
+            icon: 'solar:user-circle-linear',
+            id: uniqueId(),
+            url: '/admin/users',
             isPro: false,
           },
         ],

@@ -270,6 +270,26 @@ class AuthService {
     }
   }
 
+  // Admin: Get users
+  async getUsersForAdmin(): Promise<User[]> {
+    try {
+      // Use apiClient (with interceptors) for authenticated requests
+      const response = await apiClient.get<ApiResponse<User[]>>(API_ENDPOINTS.AUTH.GET_USERS_FOR_ADMIN);
+      const result = response.data;
+      if (!result.success) {
+        throw new Error(result.message || 'Failed to get users');
+      }
+      return result.data || [] as User[];
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<User[]>;
+        throw new Error(result.message || 'Failed to get users');
+      }
+      throw error instanceof Error ? error : new Error('Failed to get users');
+    }
+  }
+
+
   // Admin: Confirm account
   async confirmAccount(userId: string): Promise<void> {
     try {

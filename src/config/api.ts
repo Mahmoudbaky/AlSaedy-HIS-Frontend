@@ -10,6 +10,7 @@ export const API_ENDPOINTS = {
     LOGOUT_ALL: '/auth/logout-all',
     ME: '/auth/me',
     CHANGE_PASSWORD: '/auth/change-password',
+    GET_USERS_FOR_ADMIN: '/auth/get-users-for-admin',
     CONFIRM_ACCOUNT: '/auth/confirm-account',
     CHANGE_USER_ROLE: '/auth/change-user-role',
   },
