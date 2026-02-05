@@ -52,6 +52,8 @@ const CLINIC_NAMES: Record<string, string> = {
   neurologyCount: 'Neurology',
   physiotherapyCount: 'Physiotherapy',
   psychiatryCount: 'Psychiatry',
+  operationsCount: 'Operations',
+  birthCasesCount: 'Birth Cases',
 };
 
 // Default to last month
@@ -66,6 +68,8 @@ const getDefaultToDate = () => {
 };
 
 const HolyCapitalHospitals = () => {
+  const [fromDateOpen, setFromDateOpen] = useState(false);
+  const [toDateOpen, setToDateOpen] = useState(false);
   const [filters, setFilters] = useState<StatisticsFilters | null>(() => ({
     fromDate: getDefaultFromDate(),
     toDate: getDefaultToDate(),
@@ -192,7 +196,7 @@ const HolyCapitalHospitals = () => {
                       name="fromDate"
                       control={control}
                       render={({ field }) => (
-                        <Popover>
+                        <Popover open={fromDateOpen} onOpenChange={setFromDateOpen}>
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
@@ -213,7 +217,8 @@ const HolyCapitalHospitals = () => {
                               mode="single"
                               selected={field.value ? new Date(field.value) : undefined}
                               onSelect={(date) => {
-                                field.onChange(date ? date.toISOString().split('T')[0] : '');
+                                field.onChange(date ? format(date, 'yyyy-MM-dd') : '');
+                                setFromDateOpen(false);
                               }}
                               initialFocus
                             />
@@ -232,7 +237,7 @@ const HolyCapitalHospitals = () => {
                       name="toDate"
                       control={control}
                       render={({ field }) => (
-                        <Popover>
+                        <Popover open={toDateOpen} onOpenChange={setToDateOpen}>
                           <PopoverTrigger asChild>
                             <Button
                               variant="outline"
@@ -253,7 +258,8 @@ const HolyCapitalHospitals = () => {
                               mode="single"
                               selected={field.value ? new Date(field.value) : undefined}
                               onSelect={(date) => {
-                                field.onChange(date ? date.toISOString().split('T')[0] : '');
+                                field.onChange(date ? format(date, 'yyyy-MM-dd') : '');
+                                setToDateOpen(false);
                               }}
                               initialFocus
                             />
