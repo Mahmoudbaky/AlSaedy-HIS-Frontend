@@ -3,6 +3,8 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import router from './routes/Router';
 import './css/globals.css';
 import { ThemeProvider } from './components/provider/theme-provider';
+import { Toaster } from './components/ui/sonner';
+
 
 // Create a query client
 const queryClient = new QueryClient({
@@ -24,6 +26,7 @@ function App() {
         <ThemeProvider defaultTheme="dark" storageKey="vite-ui-theme">
           <RouterProvider router={router} />
         </ThemeProvider>
+        <Toaster />
       </QueryClientProvider>
     </>
   );
