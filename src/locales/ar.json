@@ -31,13 +31,13 @@
     "generalLedger": "الأستاذ العام",
     "insurance": "التأمين",
     "statistics": "الإحصائيات",
-    "holyCapitalHospitalStatistics": "إحصائيات مستشفى العاصمة المقدسة",
+    "holyCapitalHospitalStatistics": "إحصائيات  وزارة الصحة",
     "doctorStatistics": "إحصائيات الأطباء",
     "administration": "الإدارة",
     "users": "المستخدمون"
   },
   "statistics": {
-    "pageTitle": "إحصائيات مستشفى العاصمة المقدسة",
+    "pageTitle": "إحصائيات  وزارة الصحة",
     "dateRangeFilter": "تصفية نطاق التاريخ",
     "fromDate": "من تاريخ",
     "toDate": "إلى تاريخ",
