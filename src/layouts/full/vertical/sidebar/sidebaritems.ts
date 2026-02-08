@@ -175,7 +175,7 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
             name: t('sidebar.doctorStatistics'),
             icon: 'stethoscope',
             id: uniqueId(),
-            url: '#',
+            url: '/statistics/doctors',
             isPro: false,
           },
         ],

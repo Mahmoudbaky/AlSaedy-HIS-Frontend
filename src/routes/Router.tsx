@@ -40,6 +40,7 @@ const SolarIcon = Loadable(lazy(() => import('../views/icons/SolarIcon')));
 const HolyCapitalHospitalStatistics = Loadable(
   lazy(() => import('../views/statistics/HolyCapitalHospitals')),
 );
+const DoctorStatistics = Loadable(lazy(() => import('../views/statistics/Doctors')));
 
 const Users = Loadable(lazy(() => import('../views/administration/Users')));
 
@@ -65,6 +66,7 @@ const Router = [
           { path: '/user-profile', element: <UserProfile /> },
           { path: '/icons/iconify', element: <SolarIcon /> },
           { path: '/statistics/holy-capital-hospital', element: <HolyCapitalHospitalStatistics /> },
+          { path: '/statistics/doctors', element: <DoctorStatistics /> },
           { path: '/admin/users', element: <Users /> },
         ],
       },

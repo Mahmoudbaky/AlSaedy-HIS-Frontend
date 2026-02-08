@@ -180,6 +180,19 @@ export interface HolyCapitalHospitalsStatistics {
   psychiatryCount: PsychiatryCounts;
 }
 
+export interface DoctorServiceCategoryCount {
+  service_category: string;
+  count: number;
+}
+
+export interface DoctorStatisticsItem {
+  doctor_Aname: string;
+  doctor_Ename: string;
+  service_category_counts: DoctorServiceCategoryCount[];
+}
+
+export type DoctorsStatistics = DoctorStatisticsItem[];
+
 export interface ApiResponse<T> {
   success: boolean;
   message: string;
@@ -233,6 +246,72 @@ class StatisticsService {
         throw new Error(result.message || 'Failed to fetch statistics');
       }
       throw error instanceof Error ? error : new Error('Failed to fetch statistics');
+    }
+  }
+
+  // Get Doctors Statistics
+  async getDoctorsStatistics(filters: StatisticsFilters): Promise<DoctorsStatistics> {
+    if (!authService.isAuthenticated()) {
+      throw new Error('No access token available');
+    }
+
+    try {
+      const response = await apiClient.get<ApiResponse<DoctorsStatistics>>(
+        API_ENDPOINTS.STATISTICS.DOCTORS,
+        {
+          params: {
+            fromDate: this.formatDate(filters.fromDate),
+            toDate: this.formatDate(filters.toDate),
+          },
+        },
+      );
+
+      const result = response.data;
+
+      if (result.success && result.data) {
+        return result.data;
+      }
+
+      throw new Error(result.message || 'Failed to fetch doctor statistics');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<DoctorsStatistics>;
+        throw new Error(result.message || 'Failed to fetch doctor statistics');
+      }
+      throw error instanceof Error ? error : new Error('Failed to fetch doctor statistics');
+    }
+  }
+
+  // Get Dental Doctors Statistics
+  async getDentalDoctorsStatistics(filters: StatisticsFilters): Promise<DoctorsStatistics> {
+    if (!authService.isAuthenticated()) {
+      throw new Error('No access token available');
+    }
+
+    try {
+      const response = await apiClient.get<ApiResponse<DoctorsStatistics>>(
+        API_ENDPOINTS.STATISTICS.DENTAL_DOCTORS,
+        {
+          params: {
+            fromDate: this.formatDate(filters.fromDate),
+            toDate: this.formatDate(filters.toDate),
+          },
+        },
+      );
+
+      const result = response.data;
+
+      if (result.success && result.data) {
+        return result.data;
+      }
+
+      throw new Error(result.message || 'Failed to fetch dental doctor statistics');
+    } catch (error) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const result = error.response.data as ApiResponse<DoctorsStatistics>;
+        throw new Error(result.message || 'Failed to fetch dental doctor statistics');
+      }
+      throw error instanceof Error ? error : new Error('Failed to fetch dental doctor statistics');
     }
   }
 }

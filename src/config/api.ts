@@ -16,5 +16,7 @@ export const API_ENDPOINTS = {
   },
   STATISTICS: {
     HOLY_CAPITAL_HOSPITALS: '/statistics/holy-capital-hospitals',
+    DOCTORS: '/statistics/doctors',
+    DENTAL_DOCTORS: '/statistics/dental-doctors',
   },
 } as const;
