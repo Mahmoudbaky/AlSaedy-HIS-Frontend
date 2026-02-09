@@ -68,6 +68,10 @@ class AuthService {
   setTokens(tokens: Tokens): void {
     localStorage.setItem('accessToken', tokens.accessToken);
     localStorage.setItem('refreshToken', tokens.refreshToken);
+    // Dispatch custom event to notify components of auth state change
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('auth-state-changed'));
+    }
   }
 
   // Clear tokens
@@ -75,6 +79,10 @@ class AuthService {
     localStorage.removeItem('accessToken');
     localStorage.removeItem('refreshToken');
     localStorage.removeItem('user');
+    // Dispatch custom event to notify components of auth state change
+    if (typeof window !== 'undefined') {
+      window.dispatchEvent(new Event('auth-state-changed'));
+    }
   }
 
   // Store user data
@@ -196,7 +204,8 @@ class AuthService {
     if (refreshToken) {
       try {
         // Use apiClient (with interceptors) for authenticated requests
-        await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT, { refreshToken });
+        await apiClient.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGOUT}`, { refreshToken });
+        this.clearTokens();
       } catch (error) {
         console.error('Logout error:', error);
       }
@@ -209,7 +218,8 @@ class AuthService {
   async logoutAll(): Promise<void> {
     try {
       // Use apiClient (with interceptors) for authenticated requests
-      await apiClient.post(API_ENDPOINTS.AUTH.LOGOUT_ALL);
+      await apiClient.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGOUT_ALL}`);
+      this.clearTokens();
     } catch (error) {
       console.error('Logout all error:', error);
     }

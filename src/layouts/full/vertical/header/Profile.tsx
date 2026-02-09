@@ -3,8 +3,6 @@
 // import { Icon } from '@iconify/react';
 // import * as profileData from './data';
 // import SimpleBar from 'simplebar-react';
-import { Link } from 'react-router';
-import profileimg from 'src/assets/images/profile/user-1.jpg';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,15 +11,25 @@ import {
   DropdownMenuTrigger,
 } from 'src/components/ui/dropdown-menu';
 import { Button } from 'src/components/ui/button';
+import { Avatar, AvatarFallback } from 'src/components/ui/avatar';
+import { useUser } from 'src/hooks/useUser';
+import { useLogout } from 'src/hooks/useAuth';
 
 const Profile = () => {
+  const { user } = useUser();
+  const { mutate: logout } = useLogout();
+
   return (
     <div className="relative group/menu ps-1 sm:ps-15 shrink-0">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <span className="hover:text-primary hover:bg-lightprimary rounded-full flex justify-center items-center cursor-pointer group-hover/menu:bg-lightprimary group-hover/menu:text-primary">
-            <img src={profileimg} alt="logo" height="35" width="35" className="rounded-full" />
-          </span>
+          <button className="hover:text-primary hover:bg-lightprimary rounded-full cursor-pointer group-hover/menu:bg-lightprimary group-hover/menu:text-primary focus:outline-none focus:ring-2 focus:ring-primary focus:ring-offset-2">
+            <Avatar className="w-9 h-9">
+              <AvatarFallback className="bg-primary/10 text-primary font-semibold">
+                {user?.username.charAt(0).toUpperCase()}
+              </AvatarFallback>
+            </Avatar>
+          </button>
         </DropdownMenuTrigger>
 
         <DropdownMenuContent
@@ -58,11 +66,13 @@ const Profile = () => {
 
           <div className="pt-2 px-4">
             <Button
-              asChild
               variant="outline"
               className="w-full rounded-md"
+              onClick={() => {
+                logout();
+              }}
             >
-              <Link to="/auth/auth2/login">Logout</Link>
+              Logout
             </Button>
           </div>
         </DropdownMenuContent>
