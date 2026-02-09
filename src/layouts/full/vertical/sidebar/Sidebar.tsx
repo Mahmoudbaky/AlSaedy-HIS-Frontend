@@ -150,7 +150,8 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
       width={'270px'}
       showTrigger={false}
       mode={sidebarMode}
-      className="app-sidebar fixed top-0 border border-border dark:border-border bg-primary text-white z-10 h-screen"
+      variant='sidebar'
+      className="app-sidebar fixed top-0 bg-primary text-white z-10 h-screen"
     >
       {/* Logo */}
       <div className="px-6 flex items-center brand-logo overflow-hidden">
