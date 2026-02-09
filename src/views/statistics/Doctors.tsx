@@ -11,7 +11,6 @@ import { Field, FieldError, FieldGroup, FieldLabel } from 'src/components/ui/fie
 import { Popover, PopoverContent, PopoverTrigger } from 'src/components/ui/popover';
 import { Calendar } from 'src/components/ui/calendar';
 import { Input } from 'src/components/ui/input';
-import { Badge } from 'src/components/ui/badge';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from 'src/components/ui/tabs';
 import {
     Table,
@@ -287,20 +286,18 @@ const Doctors = () => {
                                                                     {t('statistics.noServiceCounts')}
                                                                 </span>
                                                             ) : (
-                                                                <div className="flex flex-wrap gap-2">
+                                                                <ul className="list-disc list-inside space-y-1 text-sm">
                                                                     {serviceCounts.map((service, serviceIndex) => (
-                                                                        <Badge
+                                                                        <li
                                                                             key={`${doctor.doctor_Ename}-${service.service_category}-${serviceIndex}`}
-                                                                            variant="lightPrimary"
-                                                                            className="gap-1"
+                                                                            className="text-muted-foreground"
                                                                         >
-                                                                            <span className="text-xs text-muted-foreground">
-                                                                                {service.service_category}
-                                                                            </span>
+                                                                            <span className="text-foreground">{service.service_category}</span>
+                                                                            {' '}
                                                                             <span className="font-semibold">{service.count}</span>
-                                                                        </Badge>
+                                                                        </li>
                                                                     ))}
-                                                                </div>
+                                                                </ul>
                                                             )}
                                                         </TableCell>
                                                         <TableCell className="text-center font-semibold">

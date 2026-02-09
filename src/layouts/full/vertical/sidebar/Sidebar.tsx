@@ -23,6 +23,7 @@ import { useTheme } from 'src/components/provider/theme-provider';
 import { AMLogo, AMMenu, AMMenuItem, AMSidebar, AMSubmenu } from 'tailwind-sidebar';
 import 'tailwind-sidebar/styles.css';
 import { useTranslation } from 'react-i18next';
+import { useUser } from 'src/hooks/useUser';
 
 /** Lucide icon keys used in sidebaritems.ts */
 const SIDEBAR_ICON_MAP: Record<string, LucideIcon> = {
@@ -130,9 +131,13 @@ const renderSidebarItems = (
 const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
   const location = useLocation();
   const pathname = location.pathname;
+  const { user } = useUser();
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const sidebarItems = getSidebarContent(t);
+  const isAdmin = user?.role === 'admin';
+  const sidebarItems = getSidebarContent(t, isAdmin);
+
+
 
   // Only allow "light" or "dark" for AMSidebar
   const sidebarMode = theme === 'light' || theme === 'dark' ? theme : undefined;

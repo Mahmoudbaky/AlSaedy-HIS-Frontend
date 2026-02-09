@@ -32,7 +32,7 @@ export interface MenuItem {
 import { uniqueId } from 'lodash';
 import type { TFunction } from 'i18next';
 
-const getSidebarContent = (t: TFunction): MenuItem[] => [
+const getSidebarContent = (t: TFunction, isAdmin: boolean): MenuItem[] => [
   // ==================== NON-PRO SECTIONS ====================
   {
     // heading: 'Out Patient',
@@ -182,27 +182,30 @@ const getSidebarContent = (t: TFunction): MenuItem[] => [
       },
     ],
   },
-  {
-    // heading: 'Administration',
-    children: [
-      {
-        name: t('sidebar.administration'),
-        icon: 'userCircle',
-        id: uniqueId(),
-        url: '/',
-        isPro: false,
-        children: [
-          {
-            name: t('sidebar.users'),
-            icon: 'userCircle',
-            id: uniqueId(),
-            url: '/admin/users',
-            isPro: false,
-          },
-        ],
-      },
-    ],
-  },
+  ...(isAdmin
+    ? [
+        {
+          children: [
+            {
+              name: t('sidebar.administration'),
+              icon: 'userCircle',
+              id: uniqueId(),
+              url: '/',
+              isPro: false,
+              children: [
+                {
+                  name: t('sidebar.users'),
+                  icon: 'userCircle',
+                  id: uniqueId(),
+                  url: '/admin/users',
+                  isPro: false,
+                },
+              ],
+            },
+          ],
+        },
+      ]
+    : []),
 ];
 
 export default getSidebarContent;
