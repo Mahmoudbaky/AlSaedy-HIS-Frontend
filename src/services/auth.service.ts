@@ -1,7 +1,7 @@
 import apiClient from 'src/lib/apiClient';
 import { API_ENDPOINTS } from 'src/config/api';
 import axios from 'axios';
-import { API_BASE_URL } from 'src/config/api';
+// import { API_BASE_URL } from 'src/config/api';
 
 // Types
 export interface LoginCredentials {
@@ -106,7 +106,7 @@ class AuthService {
     try {
       // Use axios without interceptors for login (no token needed)
       const response = await axios.post<ApiResponse<LoginResponse>>(
-        `${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGIN}`,
+        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.LOGIN}`,
         credentials,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -136,7 +136,7 @@ class AuthService {
     try {
       // Use axios without interceptors for register (no token needed)
       const response = await axios.post<ApiResponse<RegisterResponse>>(
-        `${API_BASE_URL}${API_ENDPOINTS.AUTH.REGISTER}`,
+        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REGISTER}`,
         data,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -171,7 +171,7 @@ class AuthService {
     try {
       // Use axios without interceptors for refresh (avoid infinite loop)
       const response = await axios.post<ApiResponse<Tokens>>(
-        `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REFRESH}`,
         { refreshToken },
         {
           headers: { 'Content-Type': 'application/json' },
@@ -204,7 +204,9 @@ class AuthService {
     if (refreshToken) {
       try {
         // Use apiClient (with interceptors) for authenticated requests
-        await apiClient.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGOUT}`, { refreshToken });
+        await apiClient.post<ApiResponse<null>>(API_ENDPOINTS.AUTH.LOGOUT, {
+          refreshToken,
+        });
         this.clearTokens();
       } catch (error) {
         console.error('Logout error:', error);
@@ -218,7 +220,7 @@ class AuthService {
   async logoutAll(): Promise<void> {
     try {
       // Use apiClient (with interceptors) for authenticated requests
-      await apiClient.post(`${API_BASE_URL}${API_ENDPOINTS.AUTH.LOGOUT_ALL}`);
+      await apiClient.post<ApiResponse<null>>(API_ENDPOINTS.AUTH.LOGOUT_ALL);
       this.clearTokens();
     } catch (error) {
       console.error('Logout all error:', error);
@@ -284,12 +286,14 @@ class AuthService {
   async getUsersForAdmin(): Promise<User[]> {
     try {
       // Use apiClient (with interceptors) for authenticated requests
-      const response = await apiClient.get<ApiResponse<User[]>>(API_ENDPOINTS.AUTH.GET_USERS_FOR_ADMIN);
+      const response = await apiClient.get<ApiResponse<User[]>>(
+        API_ENDPOINTS.AUTH.GET_USERS_FOR_ADMIN,
+      );
       const result = response.data;
       if (!result.success) {
         throw new Error(result.message || 'Failed to get users');
       }
-      return result.data || [] as User[];
+      return result.data || ([] as User[]);
     } catch (error) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const result = error.response.data as ApiResponse<User[]>;
@@ -298,7 +302,6 @@ class AuthService {
       throw error instanceof Error ? error : new Error('Failed to get users');
     }
   }
-
 
   // Admin: Confirm account
   async confirmAccount(userId: string): Promise<void> {

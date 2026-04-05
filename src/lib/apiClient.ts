@@ -1,9 +1,9 @@
 import axios, { AxiosError, InternalAxiosRequestConfig } from 'axios';
-import { API_BASE_URL, API_ENDPOINTS } from 'src/config/api';
+import { API_ENDPOINTS } from 'src/config/api';
 
 // Create axios instance
 export const apiClient = axios.create({
-  baseURL: API_BASE_URL,
+  baseURL: `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}/api/${import.meta.env.VITE_API_VERSION}`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -85,7 +85,7 @@ apiClient.interceptors.response.use(
           message: string;
           data?: { accessToken: string; refreshToken: string };
         }>(
-          `${API_BASE_URL}${API_ENDPOINTS.AUTH.REFRESH}`,
+          `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REFRESH}`,
           { refreshToken },
           {
             headers: {
