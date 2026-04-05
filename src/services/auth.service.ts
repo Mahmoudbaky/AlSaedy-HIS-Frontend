@@ -106,7 +106,7 @@ class AuthService {
     try {
       // Use axios without interceptors for login (no token needed)
       const response = await axios.post<ApiResponse<LoginResponse>>(
-        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.LOGIN}`,
+        `http://${import.meta.env.VITE_API_BASE_URL ?? window.location.hostname}:${import.meta.env.VITE_API_PORT}/api/${import.meta.env.VITE_API_VERSION}${API_ENDPOINTS.AUTH.LOGIN}`,
         credentials,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -136,7 +136,7 @@ class AuthService {
     try {
       // Use axios without interceptors for register (no token needed)
       const response = await axios.post<ApiResponse<RegisterResponse>>(
-        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REGISTER}`,
+        `http://${import.meta.env.VITE_API_BASE_URL ?? window.location.hostname}:${import.meta.env.VITE_API_PORT}/api/${import.meta.env.VITE_API_VERSION}${API_ENDPOINTS.AUTH.REGISTER}`,
         data,
         {
           headers: { 'Content-Type': 'application/json' },
@@ -171,7 +171,7 @@ class AuthService {
     try {
       // Use axios without interceptors for refresh (avoid infinite loop)
       const response = await axios.post<ApiResponse<Tokens>>(
-        `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REFRESH}`,
+        `http://${import.meta.env.VITE_API_BASE_URL ?? window.location.hostname}:${import.meta.env.VITE_API_PORT}/api/${import.meta.env.VITE_API_VERSION}${API_ENDPOINTS.AUTH.REFRESH}`,
         { refreshToken },
         {
           headers: { 'Content-Type': 'application/json' },

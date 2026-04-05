@@ -3,7 +3,7 @@ import { API_ENDPOINTS } from 'src/config/api';
 
 // Create axios instance
 export const apiClient = axios.create({
-  baseURL: `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}/api/${import.meta.env.VITE_API_VERSION}`,
+  baseURL: `http://${import.meta.env.VITE_API_BASE_URL ?? window.location.hostname}:3001/api/${import.meta.env.VITE_API_VERSION}`,
   headers: {
     'Content-Type': 'application/json',
   },
@@ -85,7 +85,7 @@ apiClient.interceptors.response.use(
           message: string;
           data?: { accessToken: string; refreshToken: string };
         }>(
-          `${import.meta.env.VITE_API_BASE_URL ?? window.location.origin}${API_ENDPOINTS.AUTH.REFRESH}`,
+          `http://${import.meta.env.VITE_API_BASE_URL ?? window.location.hostname}:${import.meta.env.VITE_API_PORT}/api/${import.meta.env.VITE_API_VERSION}${API_ENDPOINTS.AUTH.REFRESH}`,
           { refreshToken },
           {
             headers: {

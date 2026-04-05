@@ -39,16 +39,16 @@
 
 export const API_ENDPOINTS = {
   AUTH: {
-    LOGIN: '/api/v1/auth/login',
+    LOGIN: '/auth/login',
     REGISTER: '/auth/register',
-    REFRESH: '/api/v1/auth/refresh',
+    REFRESH: '/auth/refresh',
     LOGOUT: '/auth/logout',
     LOGOUT_ALL: '/auth/logout-all',
     ME: '/auth/me',
-    CHANGE_PASSWORD: '/api/v1/auth/change-password',
-    GET_USERS_FOR_ADMIN: '/api/v1/auth/get-users-for-admin',
-    CONFIRM_ACCOUNT: '/api/v1/auth/confirm-account',
-    CHANGE_USER_ROLE: '/api/v1/auth/change-user-role',
+    CHANGE_PASSWORD: '/auth/change-password',
+    GET_USERS_FOR_ADMIN: '/auth/get-users-for-admin',
+    CONFIRM_ACCOUNT: '/auth/confirm-account',
+    CHANGE_USER_ROLE: '/auth/change-user-role',
   },
   STATISTICS: {
     HOLY_CAPITAL_HOSPITALS: '/statistics/holy-capital-hospitals',
